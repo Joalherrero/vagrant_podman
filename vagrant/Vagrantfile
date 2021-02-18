@@ -1,0 +1,17 @@
+Vagrant.configure('2') do |config|
+  config.vm.define :podman do |podman_vm|
+    podman_vm.vm.box = 'centos/8'
+    podman_vm.vm.network "private_network", ip: "203.0.113.20"
+    podman_vm.vm.hostname = "podman"
+    podman_vm.vm.hostname = 'podman'
+    podman_vm.vm.synced_folder './../../', '/vagrant'
+    podman_vm.vm.provision 'shell', path: './scripts/podman_machine.sh'
+
+    podman_vm.vm.provider :libvirt do |lv, override|
+      lv.memory = 2*1024
+      lv.cpus = 2
+      lv.cpu_mode = 'host-passthrough'
+    end
+
+  end
+end
